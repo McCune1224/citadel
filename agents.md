@@ -551,6 +551,28 @@ sudo ufw allow samba
 - **macOS:** Finder → Go → Connect to Server → `smb://city17.local/public`
 - **Linux:** `smb://city17.local/public` or mount via fstab
 
+#### Linux Client Setup (for SMB access in file manager)
+
+**Arch Linux:**
+```bash
+sudo pacman -S gvfs-smb
+# Log out and back in, or restart file manager
+thunar -q && thunar
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt install gvfs-backends gvfs-fuse
+# Log out and back in for changes to take effect
+```
+
+**Manual mount (any distro):**
+```bash
+sudo apt install cifs-utils  # or: sudo pacman -S cifs-utils
+sudo mkdir -p /mnt/city17-public
+sudo mount -t cifs //city17.local/public /mnt/city17-public -o guest
+```
+
 ### Step 6.7: Set Up Automated Backups (rsync)
 Create a backup script:
 ```bash

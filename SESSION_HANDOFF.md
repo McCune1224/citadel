@@ -6,8 +6,9 @@ This document captures the current state of the home lab setup session for conti
 
 ## Current Status
 
-**Phase 2 (Network Setup): COMPLETED**
-**Phase 3 (Security Hardening): PENDING - START HERE NEXT SESSION**
+**Phase 6 (Storage Setup): COMPLETED**
+**Phase 3 (Security Hardening): SKIPPED FOR NOW**
+**Phase 7 (Monitoring - Netdata): PENDING - START HERE NEXT SESSION**
 
 ---
 
@@ -61,7 +62,7 @@ This document captures the current state of the home lab setup session for conti
 | HDD 1 | 465.8GB Toshiba (`/dev/sda`) - backup drive |
 | HDD 2 | 931.5GB Toshiba (`/dev/sdb`) - main storage |
 
-Note: HDDs have existing partitions from previous OS - will be wiped during Phase 6.
+Note: HDDs have been wiped and formatted as ext4.
 
 ---
 
@@ -74,15 +75,26 @@ Note: HDDs have existing partitions from previous OS - will be wiped during Phas
   - [x] Avahi installed and working
   - [x] `city17.local` resolves correctly
   - [x] kitty-terminfo installed (optional)
+- [x] Phase 4: NVIDIA Drivers
+  - [x] nvidia-driver-570 installed
+  - [x] nvidia-smi working (GTX 1070, CUDA 12.8)
+- [x] Phase 5: Docker + Portainer
+  - [x] Docker CE installed
+  - [x] breen added to docker group
+  - [x] Portainer running on port 9443
+- [x] Phase 6: Storage Setup
+  - [x] /dev/sda formatted as ext4 (backups)
+  - [x] /dev/sdb formatted as ext4 (storage)
+  - [x] Mounted at /srv/backups and /srv/storage
+  - [x] Directory structure created
+  - [x] Samba installed and configured (public + private shares)
+  - [x] Backup script scheduled (3 AM nightly)
 
 ---
 
 ## What's Next
 
-- [ ] Phase 3: Security Hardening (SSH, UFW, Fail2ban) **<-- START HERE**
-- [ ] Phase 4: NVIDIA Drivers
-- [ ] Phase 5: Docker + Portainer
-- [ ] Phase 6: Storage Setup (mount HDDs, Samba, backup script)
+- [ ] Phase 3: Security Hardening (SSH, UFW, Fail2ban) - skipped for now
 - [ ] Phase 7: Monitoring (Netdata)
 - [ ] Phase 8: Maintenance (unattended upgrades)
 
@@ -93,6 +105,31 @@ Note: HDDs have existing partitions from previous OS - will be wiped during Phas
 ```bash
 ssh breen@city17.local
 ```
+
+---
+
+## Services Running
+
+| Service | Access | Notes |
+|---------|--------|-------|
+| Portainer | `https://city17.local:9443` | Docker web UI, self-signed cert |
+| Samba (public) | `smb://city17.local/public` | Guest access, no password |
+| Samba (private) | `smb://city17.local/private` | Requires breen + samba password |
+
+---
+
+## Technologies Installed
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Ubuntu Server | 24.04 LTS | Operating system |
+| Docker CE | latest | Container runtime |
+| Portainer CE | latest | Docker web management |
+| Samba | apt default | SMB file sharing |
+| NVIDIA Driver | 570.195.03 | GPU driver |
+| CUDA | 12.8 | GPU compute (available) |
+| Avahi | apt default | mDNS (.local discovery) |
+| rsync | apt default | Backup script |
 
 ---
 
@@ -135,6 +172,15 @@ sudo systemctl restart fail2ban
 sudo ufw status
 sudo fail2ban-client status sshd
 ```
+
+---
+
+## Storage UUIDs
+
+| Drive | Label | UUID | Mount |
+|-------|-------|------|-------|
+| /dev/sda | backups | c3aa6648-ee8c-4b4d-8e59-f700e635c8c0 | /srv/backups |
+| /dev/sdb | storage | b89fc0e9-b482-43be-9154-28db15de750e | /srv/storage |
 
 ---
 
