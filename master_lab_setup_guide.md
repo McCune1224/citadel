@@ -54,7 +54,7 @@ All hostnames and service names use Valve's Half-Life universe.
 | Subnet | `192.168.68.0/24` |
 | Router/Gateway | `192.168.68.1` |
 | IP Assignment | DHCP with router reservation |
-| city17 Reserved IP | `192.168.68.101` |
+| city17 Reserved IP | `192.168.68.52` |
 | Discovery | Avahi mDNS (`city17.local`) |
 | Raspberry Pi | `192.168.68.100` (existing) |
 

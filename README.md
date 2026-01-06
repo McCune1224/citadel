@@ -10,7 +10,7 @@ This repo contains setup guides and configuration for a headless Ubuntu Server h
 
 | Hostname | Role | IP | Status |
 |----------|------|-----|--------|
-| city17 | Main home lab server | `192.168.68.101` | Setup in progress |
+| city17 | Main home lab server | `192.168.68.52` | Setup in progress |
 
 ## Documentation
 

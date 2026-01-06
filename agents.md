@@ -49,7 +49,7 @@ All hostnames, service names, and internal domains are derived from **Valve's Ha
 | Subnet | `192.168.68.0/24` |
 | Router/Gateway | `192.168.68.1` (confirm with user) |
 | IP Assignment | DHCP with router reservation |
-| city17 IP | `192.168.68.101` (or next available) |
+| city17 IP | `192.168.68.52` (DHCP reserved) |
 | Discovery | Avahi mDNS (`city17.local`) |
 | Raspberry Pi | `192.168.68.100` (existing) |
 
@@ -205,7 +205,7 @@ ip link show
 2. Find DHCP settings / Address Reservation / Static Leases
 3. Add reservation:
    - MAC Address: (from step 2.1)
-   - IP Address: `192.168.68.101`
+   - IP Address: `192.168.68.52`
    - Hostname: `city17`
 4. Save/Apply
 
@@ -234,7 +234,7 @@ sudo reboot
 ### Step 2.5: Validation
 From your personal PC (aperture):
 ```bash
-# Should resolve to 192.168.68.101
+# Should resolve to 192.168.68.52
 ping city17.local
 
 # SSH using .local name
