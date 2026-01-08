@@ -7,7 +7,8 @@ This document captures the current state of the home lab setup session for conti
 ## Current Status
 
 **Phase 6 (Storage Setup): COMPLETED**
-**Phase 8 (Maintenance): PENDING - START HERE NEXT SESSION**
+**Phase 8 (Maintenance): COMPLETED**
+**GPU: DISABLED (Due to kernel taint/instability)**
 
 ---
 
@@ -25,7 +26,7 @@ This document captures the current state of the home lab setup session for conti
 | OS drive | NVMe (238.5GB Samsung) |
 | Data drive | 931.5GB Toshiba HDD (`/dev/sdb`) -> `/srv/storage` |
 | Backup drive | 465.8GB Toshiba HDD (`/dev/sda`) -> `/srv/backups` |
-| GPU | NVIDIA GeForce GTX 1070 |
+| GPU | NVIDIA GeForce GTX 1070 - DISABLED (blacklisted to prevent kernel instability) |
 | SSH key import | From GitHub username `McCune1224` |
 
 ---
@@ -56,12 +57,12 @@ This document captures the current state of the home lab setup session for conti
 | Component | Details |
 |-----------|---------|
 | Ethernet MAC | `c8:d3:ff:41:af:89` (interface: `enp5s0`) |
-| GPU | NVIDIA GeForce GTX 1070 |
+| GPU | NVIDIA GeForce GTX 1070 (DISABLED - modules blacklisted) |
 | NVMe | 238.5GB Samsung (OS installed) |
 | HDD 1 | 465.8GB Toshiba (`/dev/sda`) - backup drive |
 | HDD 2 | 931.5GB Toshiba (`/dev/sdb`) - main storage |
 
-Note: HDDs have been wiped and formatted as ext4.
+Note: HDDs have been wiped and formatted as ext4. GPU disabled due to kernel module verification failures causing system instability.
 
 ---
 
@@ -74,9 +75,10 @@ Note: HDDs have been wiped and formatted as ext4.
   - [x] Avahi installed and working
   - [x] `city17.local` resolves correctly
   - [x] kitty-terminfo installed (optional)
-- [x] Phase 4: NVIDIA Drivers
-  - [x] nvidia-driver-570 installed
-  - [x] nvidia-smi working (GTX 1070, CUDA 12.8)
+- [x] Phase 4: NVIDIA Drivers (DISABLED)
+  - [x] nvidia-driver-570 initially installed
+  - [x] Issues found: kernel module verification failure, TSC instability
+  - [x] GPU disabled and modules blacklisted to prevent kernel panics
 - [x] Phase 5: Docker + Portainer
   - [x] Docker CE installed
   - [x] breen added to docker group
@@ -88,6 +90,9 @@ Note: HDDs have been wiped and formatted as ext4.
   - [x] Directory structure created
   - [x] Samba installed and configured (public + private shares)
   - [x] Backup script scheduled (3 AM nightly)
+- [x] Phase 8: Maintenance
+  - [x] unattended-upgrades installed and enabled
+  - [x] Automatic security updates configured
 
 ---
 
@@ -123,10 +128,9 @@ ssh breen@city17.local
 | Docker CE | latest | Container runtime |
 | Portainer CE | latest | Docker web management |
 | Samba | apt default | SMB file sharing |
-| NVIDIA Driver | 570.195.03 | GPU driver |
-| CUDA | 12.8 | GPU compute (available) |
 | Avahi | apt default | mDNS (.local discovery) |
 | rsync | apt default | Backup script |
+| unattended-upgrades | apt default | Automatic security updates |
 
 ---
 

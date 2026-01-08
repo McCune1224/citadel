@@ -67,10 +67,13 @@ All hostnames and service names use Valve's Half-Life universe.
 | 0 | Pre-install prep (SSH key, bootable USB) | Completed |
 | 1 | Ubuntu Server installation | Completed |
 | 2 | Network setup (DHCP reservation + Avahi) | Completed |
-| 4 | NVIDIA drivers | Completed |
 | 5 | Docker + Portainer | Completed |
 | 6 | Storage setup (tiered + Samba + backups) | Completed |
-| 8 | Maintenance (unattended upgrades) | Pending |
+| 8 | Maintenance (unattended upgrades) | Completed |
+
+**Phases Not Used:**
+- **Phase 3:** Security Hardening (deferred - firewall/SSH hardening for future)
+- **Phase 4:** NVIDIA Drivers (GPU disabled due to kernel instability)
 
 ---
 
