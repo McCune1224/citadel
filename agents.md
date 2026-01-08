@@ -9,7 +9,6 @@
 - **Headless Environment:** No monitor/keyboard available after initial install.
 - **Remote Access:** SSH is the primary access method.
 - **Infrastructure as Code:** Prefer declarative configs (Docker Compose) over manual commands where possible.
-- **Security First:** SSH keys only, firewall enabled, fail2ban active.
 
 ---
 
@@ -243,87 +242,6 @@ ssh breen@city17.local
 
 ---
 
-## Phase 3: Security Hardening
-
-### Step 3.1: System Updates
-```bash
-sudo apt update && sudo apt upgrade -y
-```
-
-### Step 3.2: SSH Hardening
-```bash
-# Edit SSH config
-sudo nano /etc/ssh/sshd_config
-```
-
-Find and modify these lines (uncomment if needed):
-```
-PasswordAuthentication no
-PermitRootLogin no
-PubkeyAuthentication yes
-```
-
-Apply changes:
-```bash
-sudo systemctl restart ssh
-```
-
-**IMPORTANT:** Keep your current SSH session open! Test in a new terminal:
-```bash
-# From aperture, in a NEW terminal:
-ssh breen@city17.local
-# Should work with key, no password prompt
-```
-
-### Step 3.3: Firewall (UFW)
-```bash
-# Allow SSH first (critical!)
-sudo ufw allow ssh
-
-# Set default policies
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-
-# Enable firewall
-sudo ufw enable
-
-# Verify
-sudo ufw status
-```
-
-### Step 3.4: Fail2Ban
-```bash
-# Install
-sudo apt install fail2ban -y
-
-# Create local config
-sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-
-# Edit config
-sudo nano /etc/fail2ban/jail.local
-```
-
-Find the `[sshd]` section and ensure:
-```ini
-[sshd]
-enabled = true
-port = ssh
-maxretry = 3
-bantime = 3600
-findtime = 600
-```
-
-Apply:
-```bash
-sudo systemctl enable fail2ban
-sudo systemctl restart fail2ban
-
-# Verify
-sudo fail2ban-client status sshd
-```
-
----
-
 ## Phase 4: NVIDIA Drivers
 
 ### Step 4.1: Check Current GPU Status
@@ -427,9 +345,6 @@ docker run -d \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v portainer_data:/data \
   portainer/portainer-ce:latest
-
-# Open firewall port
-sudo ufw allow 9443/tcp
 ```
 
 ### Step 5.3: Access Portainer
@@ -537,13 +452,10 @@ Add at the end of the file:
    directory mask = 0700
 ```
 
-Apply and open firewall:
+Apply:
 ```bash
 # Restart Samba
 sudo systemctl restart smbd nmbd
-
-# Allow Samba through firewall
-sudo ufw allow samba
 ```
 
 ### Step 6.6: Access Shares
@@ -619,30 +531,6 @@ crontab -l
 
 ---
 
-## Phase 7: Monitoring (Netdata)
-
-### Step 7.1: Install Netdata
-```bash
-# One-liner installer
-wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh && sh /tmp/netdata-kickstart.sh --no-updates --stable-channel
-```
-
-When prompted about Netdata Cloud, choose based on preference:
-- **Yes:** Links to Netdata Cloud for remote viewing (free tier available)
-- **No:** Local-only access
-
-### Step 7.2: Open Firewall Port
-```bash
-sudo ufw allow 19999/tcp
-```
-
-### Step 7.3: Access Dashboard
-Open browser: `http://city17.local:19999`
-
-You'll see real-time metrics for CPU, RAM, disk, network, Docker containers, and more.
-
----
-
 ## Phase 8: Maintenance
 
 ### Step 8.1: Enable Unattended Security Upgrades
@@ -678,9 +566,9 @@ APT::Periodic::Unattended-Upgrade "1";
 | Symptom | Check |
 |---------|-------|
 | Can't ping city17.local | Is Avahi running? `systemctl status avahi-daemon` |
-| SSH refused | Firewall: `sudo ufw status`, Service: `systemctl status ssh` |
-| Can't access Portainer | Firewall port 9443: `sudo ufw status` |
-| Can't access Samba shares | Firewall: `sudo ufw status`, Samba: `systemctl status smbd` |
+| SSH refused | Service: `systemctl status ssh` |
+| Can't access Portainer | Check if Portainer container is running: `docker ps` |
+| Can't access Samba shares | Samba service: `systemctl status smbd` |
 
 ### Permission Issues
 ```bash
@@ -750,9 +638,6 @@ free -h
 
 # Check running services
 systemctl list-units --type=service --state=running
-
-# Firewall status
-sudo ufw status
 
 # Docker status
 docker ps

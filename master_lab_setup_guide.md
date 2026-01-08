@@ -64,14 +64,12 @@ All hostnames and service names use Valve's Half-Life universe.
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | Pre-install prep (SSH key, bootable USB) | Ready |
-| 1 | Ubuntu Server installation | Pending |
-| 2 | Network setup (DHCP reservation + Avahi) | Pending |
-| 3 | Security hardening (SSH, UFW, Fail2ban) | Pending |
-| 4 | NVIDIA drivers | Pending |
-| 5 | Docker + Portainer | Pending |
-| 6 | Storage setup (tiered + Samba + backups) | Pending |
-| 7 | Monitoring (Netdata) | Pending |
+| 0 | Pre-install prep (SSH key, bootable USB) | Completed |
+| 1 | Ubuntu Server installation | Completed |
+| 2 | Network setup (DHCP reservation + Avahi) | Completed |
+| 4 | NVIDIA drivers | Completed |
+| 5 | Docker + Portainer | Completed |
+| 6 | Storage setup (tiered + Samba + backups) | Completed |
 | 8 | Maintenance (unattended upgrades) | Pending |
 
 ---
@@ -91,7 +89,6 @@ sudo apt update && sudo apt upgrade -y
 ### Service Status
 ```bash
 sudo systemctl status <service>
-sudo ufw status
 docker ps
 ```
 

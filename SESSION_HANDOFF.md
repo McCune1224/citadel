@@ -7,8 +7,7 @@ This document captures the current state of the home lab setup session for conti
 ## Current Status
 
 **Phase 6 (Storage Setup): COMPLETED**
-**Phase 3 (Security Hardening): SKIPPED FOR NOW**
-**Phase 7 (Monitoring - Netdata): PENDING - START HERE NEXT SESSION**
+**Phase 8 (Maintenance): PENDING - START HERE NEXT SESSION**
 
 ---
 
@@ -94,8 +93,6 @@ Note: HDDs have been wiped and formatted as ext4.
 
 ## What's Next
 
-- [ ] Phase 3: Security Hardening (SSH, UFW, Fail2ban) - skipped for now
-- [ ] Phase 7: Monitoring (Netdata)
 - [ ] Phase 8: Maintenance (unattended upgrades)
 
 ---
@@ -130,48 +127,6 @@ ssh breen@city17.local
 | CUDA | 12.8 | GPU compute (available) |
 | Avahi | apt default | mDNS (.local discovery) |
 | rsync | apt default | Backup script |
-
----
-
-## Phase 3 Commands (Ready to Run)
-
-When resuming, SSH into city17 and run:
-
-### Step 1: System Updates
-```bash
-sudo apt update && sudo apt upgrade -y
-```
-
-### Step 2: SSH Hardening
-```bash
-sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
-sudo systemctl restart ssh
-```
-
-### Step 3: Firewall (UFW)
-```bash
-sudo ufw allow ssh
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw enable
-```
-
-### Step 4: Fail2ban
-```bash
-sudo apt install -y fail2ban
-sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-sudo sed -i '/^\[sshd\]/a enabled = true' /etc/fail2ban/jail.local
-sudo systemctl enable fail2ban
-sudo systemctl restart fail2ban
-```
-
-### Step 5: Verify
-```bash
-sudo ufw status
-sudo fail2ban-client status sshd
-```
 
 ---
 
