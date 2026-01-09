@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv"
+
 	"citadel/highway17/internal/app"
 	"citadel/highway17/internal/config"
 	"citadel/highway17/internal/database"
@@ -13,6 +15,9 @@ import (
 
 func main() {
 	ctx := context.Background()
+
+	// Load .env file (ignore error if file doesn't exist in production)
+	_ = godotenv.Load()
 
 	// Load configuration
 	cfg, err := config.Load()
