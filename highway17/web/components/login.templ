@@ -1,0 +1,52 @@
+package components
+
+templ LoginPage() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Login - Highway 17 Dashboard</title>
+			<link rel="stylesheet" href="/static/css/style.css"/>
+		</head>
+		<body class="bg-dark text-valve-green font-mono flex items-center justify-center min-h-screen">
+			<div class="w-full max-w-md">
+				<div class="border-2 border-valve-orange bg-dark p-8">
+					<h1 class="text-3xl font-bold text-valve-orange mb-8 text-center">HIGHWAY 17</h1>
+					<p class="text-valve-green text-center mb-6">Administrative Access Required</p>
+					<form hx-post="/api/login" hx-on::response-error="alert('Login failed')" class="space-y-4">
+						<div>
+							<label for="username" class="block text-valve-green text-sm mb-2">Username:</label>
+							<input
+								type="text"
+								id="username"
+								name="username"
+								required
+								class="w-full bg-dark border border-valve-cyan text-valve-green p-2 focus:outline-none focus:border-valve-orange"
+								placeholder="Enter username"
+							/>
+						</div>
+						<div>
+							<label for="password" class="block text-valve-green text-sm mb-2">Password:</label>
+							<input
+								type="password"
+								id="password"
+								name="password"
+								required
+								class="w-full bg-dark border border-valve-cyan text-valve-green p-2 focus:outline-none focus:border-valve-orange"
+								placeholder="Enter password"
+							/>
+						</div>
+						<button
+							type="submit"
+							class="w-full bg-valve-orange text-dark font-bold py-2 px-4 border-2 border-valve-orange hover:bg-dark hover:text-valve-orange transition"
+						>
+							LOGIN
+						</button>
+					</form>
+					<p class="text-valve-cyan text-center text-xs mt-6">Default password: checkpoint</p>
+				</div>
+			</div>
+		</body>
+	</html>
+}

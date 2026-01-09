@@ -1,0 +1,38 @@
+package components
+
+templ Dashboard() {
+	@Layout("Dashboard") {
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<!-- Weather Widget -->
+			<div
+				id="weather-widget"
+				hx-get="/api/widgets/weather"
+				hx-trigger="load, every 10m"
+				hx-swap="innerHTML"
+				class="border-2 border-valve-orange bg-dark p-6"
+			>
+				<div class="text-valve-cyan">Loading weather...</div>
+			</div>
+			<!-- System Stats Widget -->
+			<div
+				id="system-widget"
+				hx-get="/api/widgets/system"
+				hx-trigger="load, every 5s"
+				hx-swap="innerHTML"
+				class="border-2 border-valve-orange bg-dark p-6"
+			>
+				<div class="text-valve-cyan">Loading system stats...</div>
+			</div>
+			<!-- Uptime Widget -->
+			<div
+				id="uptime-widget"
+				hx-get="/api/widgets/uptime"
+				hx-trigger="load, every 1m"
+				hx-swap="innerHTML"
+				class="border-2 border-valve-orange bg-dark p-6"
+			>
+				<div class="text-valve-cyan">Loading uptime...</div>
+			</div>
+		</div>
+	}
+}

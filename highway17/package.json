@@ -1,0 +1,22 @@
+{
+  "name": "highway17",
+  "version": "1.0.0",
+  "main": "tailwind.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "css": "tailwindcss -i ./web/static/css/input.css -o ./web/static/css/style.css",
+    "css:watch": "tailwindcss -i ./web/static/css/input.css -o ./web/static/css/style.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18"
+  }
+}

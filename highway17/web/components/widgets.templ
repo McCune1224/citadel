@@ -1,0 +1,131 @@
+package components
+
+import (
+	"citadel/highway17/internal/models"
+	"fmt"
+	"time"
+)
+
+templ WeatherWidget(weather *models.WeatherData) {
+	<div class="widget-weather">
+		<h2 class="text-2xl font-bold text-valve-orange mb-4">WEATHER</h2>
+		<div class="space-y-3">
+			<div class="flex justify-between items-center">
+				<span class="text-valve-green">Temperature:</span>
+				<span class="text-valve-cyan">{ fmt.Sprintf("%.1f°C", weather.Temperature) }</span>
+			</div>
+			<div class="flex justify-between items-center">
+				<span class="text-valve-green">Condition:</span>
+				<span class="text-valve-cyan">{ weather.Condition }</span>
+			</div>
+			<div class="flex justify-between items-center">
+				<span class="text-valve-green">Humidity:</span>
+				<span class="text-valve-cyan">{ fmt.Sprintf("%d%%", weather.Humidity) }</span>
+			</div>
+			<div class="flex justify-between items-center">
+				<span class="text-valve-green">Wind Speed:</span>
+				<span class="text-valve-cyan">{ fmt.Sprintf("%.1f km/h", weather.WindSpeed) }</span>
+			</div>
+			<div class="flex justify-between items-center">
+				<span class="text-valve-green">Pressure:</span>
+				<span class="text-valve-cyan">{ fmt.Sprintf("%.0f hPa", weather.Pressure) }</span>
+			</div>
+			<div class="flex justify-between items-center">
+				<span class="text-valve-green">Visibility:</span>
+				<span class="text-valve-cyan">{ fmt.Sprintf("%.1f km", weather.Visibility) }</span>
+			</div>
+			<div class="text-valve-green text-xs mt-4">
+				Updated: { weather.LastUpdated.Format(time.RFC3339) }
+			</div>
+		</div>
+	</div>
+}
+
+templ SystemStatsWidget(stats *models.SystemStats) {
+	<div class="widget-system">
+		<h2 class="text-2xl font-bold text-valve-orange mb-4">SYSTEM STATUS</h2>
+		<div class="space-y-3">
+			<div>
+				<div class="flex justify-between mb-1">
+					<span class="text-valve-green">CPU Usage</span>
+					<span class="text-valve-cyan">{ fmt.Sprintf("%.1f%%", stats.CPUPercent) }</span>
+				</div>
+				<div class="h-2 bg-dark border border-valve-green">
+					<div class="h-full bg-valve-green" style={ fmt.Sprintf("width: %.1f%%", stats.CPUPercent) }></div>
+				</div>
+			</div>
+			<div>
+				<div class="flex justify-between mb-1">
+					<span class="text-valve-green">Memory Usage</span>
+					<span class="text-valve-cyan">{ fmt.Sprintf("%.1f%%", stats.MemoryPercent) }</span>
+				</div>
+				<div class="h-2 bg-dark border border-valve-green">
+					<div class="h-full bg-valve-green" style={ fmt.Sprintf("width: %.1f%%", stats.MemoryPercent) }></div>
+				</div>
+			</div>
+			<div class="text-valve-green text-sm">
+				{ fmt.Sprintf("%.1f GB / %.1f GB", stats.MemoryUsedGB, stats.MemoryTotalGB) }
+			</div>
+			<div>
+				<div class="flex justify-between mb-1">
+					<span class="text-valve-green">Disk Usage</span>
+					<span class="text-valve-cyan">{ fmt.Sprintf("%.1f%%", stats.DiskPercent) }</span>
+				</div>
+				<div class="h-2 bg-dark border border-valve-green">
+					<div class="h-full bg-valve-green" style={ fmt.Sprintf("width: %.1f%%", stats.DiskPercent) }></div>
+				</div>
+			</div>
+			<div class="text-valve-green text-sm">
+				{ fmt.Sprintf("%.1f GB / %.1f GB", stats.DiskUsedGB, stats.DiskTotalGB) }
+			</div>
+			<div class="text-valve-cyan text-xs mt-4">
+				Processes: { fmt.Sprintf("%d", stats.ProcessCount) } | Load: { fmt.Sprintf("%.2f, %.2f, %.2f", stats.LoadAverage[0], stats.LoadAverage[1], stats.LoadAverage[2]) }
+			</div>
+		</div>
+	</div>
+}
+
+templ UptimeWidget(uptimeSeconds uint64) {
+	<div class="widget-uptime">
+		<h2 class="text-2xl font-bold text-valve-orange mb-4">UPTIME</h2>
+		<div class="text-center">
+			<div class="text-4xl font-bold text-valve-cyan mb-4">
+				{ formatUptimeText(uptimeSeconds) }
+			</div>
+			<div class="text-valve-green text-sm">
+				{ fmt.Sprintf("%d seconds", uptimeSeconds) }
+			</div>
+		</div>
+	</div>
+}
+
+func formatUptimeText(seconds uint64) string {
+	days := seconds / 86400
+	hours := (seconds % 86400) / 3600
+	minutes := (seconds % 3600) / 60
+
+	parts := []string{}
+
+	if days > 0 {
+		parts = append(parts, fmt.Sprintf("%dd", days))
+	}
+	if hours > 0 {
+		parts = append(parts, fmt.Sprintf("%dh", hours))
+	}
+	if minutes > 0 {
+		parts = append(parts, fmt.Sprintf("%dm", minutes))
+	}
+
+	if len(parts) == 0 {
+		return "< 1m"
+	}
+
+	result := ""
+	for i, p := range parts {
+		if i > 0 {
+			result += " "
+		}
+		result += p
+	}
+	return result
+}

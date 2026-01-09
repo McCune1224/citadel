@@ -1,0 +1,33 @@
+package components
+
+templ Layout(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title } - Highway 17 Dashboard</title>
+			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+			<link rel="stylesheet" href="/static/css/style.css"/>
+		</head>
+		<body class="bg-dark text-valve-green font-mono">
+			<div class="min-h-screen flex flex-col">
+				<header class="bg-dark border-b border-valve-orange">
+					<nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+						<h1 class="text-3xl font-bold text-valve-orange">HIGHWAY 17</h1>
+						<div class="flex gap-4">
+							<a href="/dashboard" class="text-valve-cyan hover:text-valve-green transition">Dashboard</a>
+							<button hx-post="/api/logout" class="text-valve-orange hover:text-valve-cyan transition">Logout</button>
+						</div>
+					</nav>
+				</header>
+				<main class="flex-1 container mx-auto px-4 py-8">
+					{ children... }
+				</main>
+				<footer class="bg-dark border-t border-valve-orange text-center py-4 text-valve-green text-sm">
+					<p>Highway 17 Dashboard - Powered by Valve Half-Life 2 Aesthetic</p>
+				</footer>
+			</div>
+		</body>
+	</html>
+}

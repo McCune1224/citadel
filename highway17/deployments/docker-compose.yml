@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: highway17-db
+    environment:
+      POSTGRES_USER: highway17
+      POSTGRES_PASSWORD: checkpoint
+      POSTGRES_DB: highway17
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U highway17"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: deployments/Dockerfile
+    container_name: highway17-dashboard
+    environment:
+      DATABASE_URL: postgres://highway17:checkpoint@postgres:5432/highway17
+      APP_PORT: 8080
+      APP_ENV: development
+      LOG_LEVEL: info
+      WEATHER_LATITUDE: 43.1629
+      WEATHER_LONGITUDE: -77.6099
+      WEATHER_CACHE_TTL: 600
+      STATS_POLL_INTERVAL: 5
+      WEATHER_POLL_INTERVAL: 600
+      TAILSCALE_ENABLED: "false"
+      LOGIN_PASSWORD: checkpoint
+      SYSTEM_STATS_ENABLED: "true"
+      UPTIME_ENABLED: "true"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./migrations:/app/migrations
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

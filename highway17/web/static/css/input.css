@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Valve Half-Life 2 Theme Styling */
+:root {
+  --valve-orange: #FF8C00;
+  --valve-dark: #0D0D0D;
+  --valve-cyan: #00FFFF;
+  --valve-green: #00FF00;
+}
+
+body {
+  background-color: var(--valve-dark);
+  color: var(--valve-green);
+  font-family: 'Courier New', monospace;
+}
+
+/* Widget borders */
+.border-2.border-valve-orange {
+  border-color: var(--valve-orange);
+}
+
+.bg-dark {
+  background-color: var(--valve-dark);
+}
+
+.text-valve-orange {
+  color: var(--valve-orange);
+}
+
+.text-valve-green {
+  color: var(--valve-green);
+}
+
+.text-valve-cyan {
+  color: var(--valve-cyan);
+}
+
+.border-valve-orange {
+  border-color: var(--valve-orange);
+}
+
+.border-valve-cyan {
+  border-color: var(--valve-cyan);
+}
+
+.border-valve-green {
+  border-color: var(--valve-green);
+}
+
+.bg-valve-orange {
+  background-color: var(--valve-orange);
+}
+
+/* Button styling */
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  text-shadow: 0 0 10px var(--valve-orange);
+}
+
+/* Input styling */
+input {
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  box-shadow: 0 0 10px var(--valve-orange);
+}
+
+/* Scanner effect */
+@keyframes scan {
+  0% {
+    text-shadow: 0 0 10px var(--valve-cyan);
+  }
+  50% {
+    text-shadow: 0 0 20px var(--valve-orange);
+  }
+  100% {
+    text-shadow: 0 0 10px var(--valve-cyan);
+  }
+}
+
+.scan-text {
+  animation: scan 3s infinite;
+}
