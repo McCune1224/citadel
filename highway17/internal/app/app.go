@@ -22,6 +22,14 @@ func New(cfg *config.Config, db *database.DB, log *zap.Logger) (*echo.Echo, erro
 		LogURI:    true,
 		LogStatus: true,
 		LogError:  true,
+		LogValuesFunc: func(c echo.Context, values echomiddleware.RequestLoggerValues) error {
+			log.Sugar().Infow("request",
+				"uri", values.URI,
+				"status", values.Status,
+				"method", values.Method,
+			)
+			return nil
+		},
 	}))
 	e.Use(echomiddleware.Recover())
 	e.Use(echomiddleware.CORS())
